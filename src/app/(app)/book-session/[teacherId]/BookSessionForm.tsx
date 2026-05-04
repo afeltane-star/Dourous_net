@@ -14,7 +14,7 @@ interface Props {
 export default function BookSessionForm({ teacherId, studentId }: Props) {
   const router = useRouter()
   const [date, setDate] = useState('')
-  const [filiere, setFiliere] = useState('')
+  const [time, setTime] = useState('')
   const [file, setFile] = useState<File | null>(null)
   const [loading, setLoading] = useState(false)
   const [dragOver, setDragOver] = useState(false)
@@ -47,7 +47,7 @@ export default function BookSessionForm({ teacherId, studentId }: Props) {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     if (!date) { toast.error('Veuillez choisir une date.'); return }
-    if (!filiere) { toast.error('Veuillez choisir une filière.'); return }
+    if (!time) { toast.error('Veuillez choisir une heure.'); return }
     if (!file) { toast.error('Veuillez uploader votre devoir (PDF).'); return }
 
     setLoading(true)
@@ -79,7 +79,7 @@ export default function BookSessionForm({ teacherId, studentId }: Props) {
       student_id: studentId,
       teacher_id: teacherId,
       date,
-      filiere,
+      time,
       status: 'pending',
       homework_file_url: homeworkUrl,
     })
@@ -121,24 +121,17 @@ export default function BookSessionForm({ teacherId, studentId }: Props) {
         </div>
 
         <div>
-          <label htmlFor="session-filiere" className="block text-sm font-medium text-slate-300 mb-2">
-            Votre Filière
+          <label htmlFor="session-time" className="block text-sm font-medium text-slate-300 mb-2">
+            Heure de la séance
           </label>
-          <select
-            id="session-filiere"
+          <input
+            id="session-time"
+            type="time"
             required
-            value={filiere}
-            onChange={(e) => setFiliere(e.target.value)}
-            className="w-full bg-slate-800 border border-slate-700 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 rounded-xl px-4 py-3 text-white outline-none transition-all appearance-none cursor-pointer"
-          >
-            <option value="" disabled>Choisir une filière</option>
-            <option value="Sciences Mathématiques">Sciences Mathématiques</option>
-            <option value="Sciences Physiques">Sciences Physiques</option>
-            <option value="SVT">SVT</option>
-            <option value="Sciences Économiques">Sciences Économiques</option>
-            <option value="Lettres">Lettres & Sciences Humaines</option>
-            <option value="Autre">Autre</option>
-          </select>
+            value={time}
+            onChange={(e) => setTime(e.target.value)}
+            className="w-full bg-slate-800 border border-slate-700 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 rounded-xl px-4 py-3 text-white outline-none transition-all [color-scheme:dark]"
+          />
         </div>
       </div>
 

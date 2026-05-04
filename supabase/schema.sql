@@ -26,7 +26,7 @@ create table if not exists public.sessions (
   student_id        uuid not null references auth.users(id) on delete cascade,
   teacher_id        uuid not null references public.teachers(id) on delete cascade,
   date              date not null,
-  filiere           text,
+  time              text,
   status            text not null default 'pending'
                       check (status in ('pending','confirmed','completed')),
   homework_file_url text,

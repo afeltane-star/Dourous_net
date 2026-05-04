@@ -12,7 +12,7 @@ export type Session = {
   teacher_id: string
   date: string
   created_at: string
-  filiere: string | null
+  time: string | null
   status: 'pending' | 'confirmed' | 'completed'
   homework_file_url: string | null
   teachers?: Teacher

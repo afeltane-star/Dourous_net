@@ -51,13 +51,7 @@ export default async function DashboardPage() {
 
   const typedSessions = (sessions as Session[]) ?? []
 
-  // Group by filiere
-  const groupedSessions = typedSessions.reduce((acc, session) => {
-    const key = session.filiere || 'Général'
-    if (!acc[key]) acc[key] = []
-    acc[key].push(session)
-    return acc
-  }, {} as Record<string, Session[]>)
+  // No longer grouping by filiere
 
   const counts = {
     pending: typedSessions.filter((s) => s.status === 'pending').length,
@@ -152,71 +146,71 @@ export default async function DashboardPage() {
               </div>
             )}
 
-            {!error && Object.entries(groupedSessions).map(([filiere, sessions]) => (
-              <div key={filiere} className="mb-10 last:mb-0">
-                <h3 className="text-sm font-bold text-indigo-400 uppercase tracking-[0.2em] mb-4 flex items-center gap-2 px-1">
-                  <GraduationCap className="w-4 h-4" />
-                  {filiere}
-                </h3>
-                <div className="space-y-4">
-                  {sessions.map((session) => {
-                    const cfg = statusConfig[session.status]
-                    const StatusIcon = cfg.icon
-                    return (
-                      <div
-                        key={session.id}
-                        className="group bg-slate-900/40 hover:bg-slate-900/60 border border-slate-800/50 hover:border-slate-700/80 rounded-2xl p-5 transition-all duration-300"
-                      >
-                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-5">
-                          <div className="flex items-start gap-4">
-                            <div className="bg-gradient-to-br from-indigo-500/10 to-violet-500/10 border border-indigo-500/10 w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
-                              <BookOpen className="w-7 h-7 text-indigo-400" />
-                            </div>
-                            <div>
-                              <p className="font-bold text-white text-lg group-hover:text-indigo-300 transition-colors">
-                                {session.teachers?.name ?? 'Professeur'}
-                              </p>
-                              <p className="text-slate-400 font-medium">
-                                {session.teachers?.subject ?? '—'}
-                              </p>
-                              <div className="flex flex-wrap items-center gap-y-1 gap-x-4 mt-2">
-                                <span className="text-slate-500 text-sm flex items-center gap-1.5 bg-slate-800/50 px-2.5 py-1 rounded-lg">
-                                  <Calendar className="w-3.5 h-3.5" />
-                                  {new Date(session.date).toLocaleDateString('fr-FR', {
-                                    weekday: 'short',
-                                    day: 'numeric',
-                                    month: 'short',
-                                    year: 'numeric',
-                                  })}
-                                </span>
-                                {session.homework_file_url && (
-                                  <a
-                                    href={session.homework_file_url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="inline-flex items-center gap-1.5 text-sm text-indigo-400 hover:text-indigo-300 font-semibold transition-colors"
-                                  >
-                                    <FileText className="w-4 h-4" />
-                                    Voir le devoir
-                                  </a>
-                                )}
-                              </div>
-                            </div>
+            {!error && typedSessions.length > 0 && (
+              <div className="space-y-4">
+                {typedSessions.map((session) => {
+                  const cfg = statusConfig[session.status]
+                  const StatusIcon = cfg.icon
+                  return (
+                    <div
+                      key={session.id}
+                      className="group bg-slate-900/40 hover:bg-slate-900/60 border border-slate-800/50 hover:border-slate-700/80 rounded-2xl p-5 transition-all duration-300"
+                    >
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-5">
+                        <div className="flex items-start gap-4">
+                          <div className="bg-gradient-to-br from-indigo-500/10 to-violet-500/10 border border-indigo-500/10 w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                            <BookOpen className="w-7 h-7 text-indigo-400" />
                           </div>
-
-                          <div className="flex items-center self-end sm:self-center">
-                            <span className={`inline-flex items-center gap-2 text-xs font-bold px-4 py-2 rounded-xl uppercase tracking-wider ${cfg.className}`}>
-                              <StatusIcon className="w-4 h-4" />
-                              {cfg.label}
-                            </span>
+                          <div>
+                            <p className="font-bold text-white text-lg group-hover:text-indigo-300 transition-colors">
+                              {session.teachers?.name ?? 'Professeur'}
+                            </p>
+                            <p className="text-slate-400 font-medium">
+                              {session.teachers?.subject ?? '—'}
+                            </p>
+                            <div className="flex flex-wrap items-center gap-y-1 gap-x-4 mt-2">
+                              <span className="text-slate-500 text-sm flex items-center gap-1.5 bg-slate-800/50 px-2.5 py-1 rounded-lg">
+                                <Calendar className="w-3.5 h-3.5" />
+                                {new Date(session.date).toLocaleDateString('fr-FR', {
+                                  weekday: 'short',
+                                  day: 'numeric',
+                                  month: 'short',
+                                  year: 'numeric',
+                                })}
+                              </span>
+                              {session.time && (
+                                <span className="text-slate-500 text-sm flex items-center gap-1.5 bg-slate-800/50 px-2.5 py-1 rounded-lg">
+                                  <Clock className="w-3.5 h-3.5" />
+                                  {session.time}
+                                </span>
+                              )}
+                              {session.homework_file_url && (
+                                <a
+                                  href={session.homework_file_url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="inline-flex items-center gap-1.5 text-sm text-indigo-400 hover:text-indigo-300 font-semibold transition-colors"
+                                >
+                                  <FileText className="w-4 h-4" />
+                                  Voir le devoir
+                                </a>
+                              )}
+                            </div>
                           </div>
                         </div>
+
+                        <div className="flex items-center self-end sm:self-center">
+                          <span className={`inline-flex items-center gap-2 text-xs font-bold px-4 py-2 rounded-xl uppercase tracking-wider ${cfg.className}`}>
+                            <StatusIcon className="w-4 h-4" />
+                            {cfg.label}
+                          </span>
+                        </div>
                       </div>
-                    )
-                  })}
-                </div>
+                    </div>
+                  )
+                })}
               </div>
-            ))}
+            )}
           </div>
         </div>
 
