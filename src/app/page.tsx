@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { BookOpen, ArrowRight, Users, Calendar, Upload } from 'lucide-react'
+import { BookOpen, Users, Calendar, Upload } from 'lucide-react'
 
 export default function HomePage() {
   return (
@@ -31,17 +31,9 @@ export default function HomePage() {
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
-              href="/register"
-              id="cta-register"
-              className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-semibold px-8 py-4 rounded-2xl transition-all duration-200 shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40 hover:scale-105"
-            >
-              Commencer gratuitement
-              <ArrowRight className="w-5 h-5" />
-            </Link>
-            <Link
               href="/login"
               id="cta-login"
-              className="inline-flex items-center justify-center gap-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 hover:border-slate-600 text-white font-semibold px-8 py-4 rounded-2xl transition-all duration-200"
+              className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-semibold px-8 py-4 rounded-2xl transition-all duration-200 shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40 hover:scale-105"
             >
               Se connecter
             </Link>

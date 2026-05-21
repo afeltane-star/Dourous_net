@@ -1,5 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
-import { redirect, notFound } from 'next/navigation'
+import { notFound } from 'next/navigation'
 import BookSessionForm from './BookSessionForm'
 import type { Teacher } from '@/lib/types'
 import { ArrowLeft, GraduationCap } from 'lucide-react'
@@ -17,7 +17,7 @@ export default async function BookSessionPage({
     data: { user },
   } = await supabase.auth.getUser()
 
-  if (!user) redirect('/login')
+  const studentId = user?.id ?? 'guest'
 
   const { data: teacher } = await supabase
     .from('teachers')
@@ -75,7 +75,7 @@ export default async function BookSessionPage({
       {/* Booking form */}
       <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-6">
         <h1 className="text-xl font-bold text-white mb-6">Réserver une séance</h1>
-        <BookSessionForm teacherId={teacherId} studentId={user.id} />
+        <BookSessionForm teacherId={teacherId} studentId={studentId} />
       </div>
     </div>
   )

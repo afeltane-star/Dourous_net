@@ -1,5 +1,4 @@
 import { createClient } from '@/lib/supabase/server'
-import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import type { Session } from '@/lib/types'
 import {
@@ -41,12 +40,14 @@ export default async function DashboardPage() {
     data: { user },
   } = await supabase.auth.getUser()
 
-  if (!user) redirect('/login')
+  const studentId = user?.id ?? 'guest'
+  const firstName =
+    user?.user_metadata?.full_name?.split(' ')[0] ?? 'Élève'
 
   const { data: sessions, error } = await supabase
     .from('sessions')
     .select('*, teachers(name, subject)')
-    .eq('student_id', user.id)
+    .eq('student_id', studentId)
     .order('date', { ascending: false })
 
   const typedSessions = (sessions as Session[]) ?? []
@@ -76,7 +77,7 @@ export default async function DashboardPage() {
           <h1 className="text-3xl font-bold text-white tracking-tight">
             Bonjour,{' '}
             <span className="bg-gradient-to-r from-indigo-400 via-violet-400 to-fuchsia-400 bg-clip-text text-transparent">
-              {user.user_metadata?.full_name?.split(' ')[0] ?? 'Élève'} 👋
+              {firstName} 👋
             </span>
           </h1>
           <p className="text-slate-400 mt-1 text-lg">Prêt pour votre prochaine séance ?</p>
